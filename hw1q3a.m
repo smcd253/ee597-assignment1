@@ -536,7 +536,6 @@ d_xy=sqrt(d_x.^2+d_y.^2);
 
 %create plot
 figure(1);
-hold on;
 grid on;
 %iterate through each exp data and graph
 %exp7
@@ -548,6 +547,8 @@ for ln=1:8
 end
 disp(lm);
 
+
+hold on;
 %exp8
 exp8(exp8 == 500) = NaN;
 for ln=1:8
