@@ -4,7 +4,7 @@ randn('state',200); % initializing the randn() function
 
 % Transmitter
 ip = rand(1,N)>0.5; % generating 0,1 with equal probability
-s = 2*ip-1; % BPSK modulation 0 -> -1; 1 -> 1 
+s = 2*ip-1; % BPSK modulation 0 -> -1; 1 -> 1
 n = 1/sqrt(2)*[randn(1,N) + j*randn(1,N)]; % white gaussian noise, 0dB variance 
 Eb_N0_dB = [-3:10]; % multiple Eb/N0 values
 
