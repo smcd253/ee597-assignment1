@@ -1,36 +1,37 @@
+N = 10^6 % number of bits or symbols
 
-% number of trials
-t = 1000
+% Transmitter
+ip = rand(1,N)>0.5; % generating 0,1 with equal probability
+s = 2*ip-1; % BPSK modulation 0 -> -1; 1 -> 1 
+n = 1/sqrt(2)*[randn(1,N) + j*randn(1,N)]; % white gaussian noise, 0dB variance 
+SNR = [-3:10]; % multiple Eb/N0 values
 
-% signal magnitude
-A = 0:1:t
+for i = 1:length(SNR)
+   % Noise addition
+   y = s + 10^(-SNR(i)/20)*n; % additive white gaussian noise
 
-% declare Eb (symbol mag squared)
-% Eb = 0:1:t;
+   % receiver - hard decision decoding
+   ipHat = real(y)>0;
 
-% No values
-No = 1;
-VAR = No/2;
+   % counting the errors
+   nErr(i) = size(find([ip- ipHat]),2);
 
-% noise array
-n = normrnd(0, VAR, [1,t])
+end
 
-% SNR
-SNR = Eb/No;
+simBer = nErr/N; % simulated ber
+theoryBer = 0.5*erfc(sqrt(10.^(SNR/10))); % theoretical ber
 
-% define decision bounary as 0
-dec_bound = 0
-
-% iterate along SNR and calculate Pb based on 
-for j = 1:t
-    % build/send signal
-    s = randi(-1*A[j]:A[j]);
-    r = s + n[j];
-    
-    % receive signal and evaluate if 
-end   
-% symbol noise = normrnd(0,VAR), where VAR = No/2
-% "send" bits with a value of 0 or 1
-    % 0 = -A
-    % 1 = A
-% if -A + N[i]r = normrnd(mu,sigma)
+% plot
+close all
+figure
+semilogy(SNR,theoryBer,'b.-');
+hold on
+semilogy(SNR,simBer,'mx-');
+hold on
+% semilogy(SNR,y/N,'s');
+axis([-3 10 10^-5 0.5])
+grid on
+legend('theory', 'simulation');
+xlabel('Eb/No, dB');
+ylabel('Bit Error Rate');
+title('Bit error probability curve for BPSK modulation');
