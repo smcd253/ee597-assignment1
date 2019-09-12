@@ -1,12 +1,12 @@
 clear;
 
 % experiment variables
-N = 100000; % number of symbols
+N = 10^5; % number of symbols
 heta = 2; % path loss exponent
 
 % Transmitter
 
-% encode symbols (sequential
+% encode symbols (sequential)
 symbols = randi([0 3],[1,N]); % random bits to transmit
 bits = de2bi(symbols);
 bits = bits.'; % transpose to match theory

@@ -1,12 +1,27 @@
 clear;
 
 % experiment variables
-N = 10^6; % number of bits
+N = 10^5; % number of symbols
 heta = 2; % path loss exponent
 
 % Transmitter
-bits = rand(1,N)>0.5; % random bits to transmit
-s = 2*bits-1; % BPSK modulation 0 -> -1; 1 -> 1
+
+% encode symbols (sequential)
+symbols = randi([0 3],[1,N]); % random bits to transmit
+bits = de2bi(symbols);
+bits = bits.'; % transpose to match theory
+
+%change to gray code
+for i =1:length(bits)
+    if((bits(1,i) == 1) && (bits(2,i) == 0))
+        bits(2,i) = 1;
+    end
+end
+
+% 4-PSK modulation 00 -> -1; 01 -> j1; 10 -> -j1; 11 -> 1
+s = 2*bits(1,:)-1 + 1i*(2*bits(2,:)-1);
+
+% s = s.'
 % amplitude (power) in mW
 % we will increase this over the given range 
 % to see the effects on bit error rate
@@ -19,24 +34,27 @@ Eb = 10*log(A);
 N0 = 1;
 var = N0/sqrt(2);
 % gaussian noise vector (same size as number of bits transmitted) in watts
-n = normrnd(0,var,[1,N]) + 1i*normrnd(0,var,[1,N]); % li = j (matlab prompted this)
+n = normrnd(0,var,[1,N]) + 1i*normrnd(0,var,[1,N]); % 1i = j (matlab prompted this)
 SNR = Eb./N0; % range of SNR values to iterate over
 
-for i = 1:length(SNR)
+num_trials = length(SNR);
+nErr = zeros(1,num_trials);
+bitsHat = zeros(2,N);
+
+for i = 1:num_trials
    % Noise addition
    r = s + 10^(-SNR(i)/(heta*10))*n; % AWG in mW
 
    % receiver - hard decision decoding
-   bitsHat = real(r)>0;
+   bitsHat(1,:) = real(r)>0;
+   bitsHat(2,:) = imag(r)>0;
 
    % counting the errors
-   nErr(i) = size(find([bits- bitsHat]),2);
-
+   nErr(i) = size(find(bits - bitsHat),1);
 end
 
 simBer = nErr/N; % simulated ber
 theoryBer = 0.5*erfc(sqrt(10.^(SNR/10))); % theoretical ber
-% theoryBer = qfunc(real(sqrt(2*SNR)));
 
 % plot
 close all
