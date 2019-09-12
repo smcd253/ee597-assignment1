@@ -6,6 +6,9 @@ Modeling bit error with M-PSK and fitting the simple path loss model to collecte
 * bit error calculation theory: https://www.unilim.fr/pages_perso/vahid/notes/ber_awgn.pdf
   
 ## Comments
+
+### Problems 1 and 2
+
 **Figure 1** - Probability of Error for BPSK Modulation
 ![](p1_bpsk_results.png)
 
@@ -27,3 +30,6 @@ for BPSK. This fact can be found in the above source "bit error calculation theo
 We can make a slight improvement on the behavior of 4-PSK by changing our encoding scheme to gray-coding. This
 minimizes our chance of 2-bit errors, and as we can see on the resulting plot, the simulated BER converges
 to the theoretical BER at higher SNRs.
+
+### Problem 3
+
