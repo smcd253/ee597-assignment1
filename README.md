@@ -1,4 +1,4 @@
-### ee597-assignment1
+# ee597-assignment1
 Modeling bit error with M-PSK and fitting the simple path loss model to collected data.
 
 ## Sources
