@@ -1,7 +1,7 @@
 clear;
 
 % experiment variables
-N = 10^5; % number of symbols
+N = 10^6; % number of symbols
 heta = 2; % path loss exponent
 
 % Transmitter
@@ -25,29 +25,30 @@ Eb = 10*log(A);
 
 % Noise
 N0 = 1;
-var = N0/sqrt(2);
+norm_factor = 1/sqrt(2);
 % gaussian noise vector (same size as number of bits transmitted) in watts
-n = normrnd(0,var,[1,N]) + 1i*normrnd(0,var,[1,N]); % 1i = j (matlab prompted this)
-SNR = Eb./N0; % range of SNR values to iterate over
+n = norm_factor*(normrnd(0,N0,[1,N]) + 1i*normrnd(0,N0,[1,N])); % li = j (matlab prompted this)
+SNR = Eb./N0; % range of SNR values to iterate overr
 
 num_trials = length(SNR);
 nErr = zeros(1,num_trials);
-bitsHat = zeros(2,N);
+bits_received = zeros(2,N);
 
 for i = 1:num_trials
    % Noise addition
    r = s + 10^(-SNR(i)/(heta*10))*n; % AWG in mW
 
    % receiver - hard decision decoding
-   bitsHat(1,:) = real(r)>0;
-   bitsHat(2,:) = imag(r)>0;
+   bits_received(1,:) = real(r)>0;
+   bits_received(2,:) = imag(r)>0;
 
    % counting the errors
-   nErr(i) = size(find(bits - bitsHat),1);
+   nErr(i) = size(find(bits - bits_received),1);
 end
 
-simBer = nErr/N; % simulated ber
-theoryBer = 0.5*erfc(sqrt(10.^(SNR/10))); % theoretical ber
+simBer = nErr/N; % simulated BER
+EbN0 = 10.^(SNR/10);
+theoryBer = qfunc(sqrt(2*EbN0)); % theoretical BER
 
 % plot
 close all
@@ -61,4 +62,4 @@ grid on
 legend('theoretical', 'simulation');
 xlabel('SNR "Eb/No" in dB');
 ylabel('Bit Error Rate');
-title('Bit error probability curve for BPSK modulation');
+title('Bit Error Probability Curve for 4-PSK Modulation with Sequential Encoding');

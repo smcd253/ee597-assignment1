@@ -17,9 +17,9 @@ Eb = 10*log(A);
 
 % Noise
 N0 = 1;
-var = N0/sqrt(2);
+norm_factor = 1/sqrt(2);
 % gaussian noise vector (same size as number of bits transmitted) in watts
-n = normrnd(0,var,[1,N]) + 1i*normrnd(0,var,[1,N]); % li = j (matlab prompted this)
+n = norm_factor*(normrnd(0,N0,[1,N]) + 1i*normrnd(0,N0,[1,N])); % li = j (matlab prompted this)
 SNR = Eb./N0; % range of SNR values to iterate over
 
 for i = 1:length(SNR)
@@ -27,16 +27,16 @@ for i = 1:length(SNR)
    r = s + 10^(-SNR(i)/(heta*10))*n; % AWG in mW
 
    % receiver - hard decision decoding
-   bitsHat = real(r)>0;
+   bits_received = real(r)>0;
 
-   % counting the errors
-   nErr(i) = size(find([bits- bitsHat]),2);
+   % count the errors
+   nErr(i) = size(find([bits- bits_received]),2);
 
 end
 
-simBer = nErr/N; % simulated ber
-theoryBer = 0.5*erfc(sqrt(10.^(SNR/10))); % theoretical ber
-% theoryBer = qfunc(real(sqrt(2*SNR)));
+simBer = nErr/N; % simulated BER
+EbN0 = 10.^(SNR/10);
+theoryBer = qfunc(sqrt(2*EbN0)); % theoretical BER
 
 % plot
 close all
@@ -50,4 +50,4 @@ grid on
 legend('theoretical', 'simulation');
 xlabel('SNR "Eb/No" in dB');
 ylabel('Bit Error Rate');
-title('Bit error probability curve for BPSK modulation');
+title('Bit Error Probability Curve for BPSK Modulation');
