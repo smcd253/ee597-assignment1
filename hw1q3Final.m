@@ -2,6 +2,10 @@
 
 clear all;
 
+%DATA ENTRY
+P_tx=27;
+d_0=1;
+
 %receiver coordinates
 xy_Rx=[0	14.38
 17.925	13.47
@@ -25,34 +29,11 @@ xy_Tx=[8.92	14.375
 39.745	25.46
 7.91	17.43
 7.3	23.53];
-
-%calculate x distance
-d_x=zeros(length(xy_Tx(:,1)),length(xy_Rx(:,1)));
-for ix=1:length(xy_Tx(:,1))
-    for jx=1:length(xy_Rx(:,1))
-        %ix
-        %jx
-        d_x(ix,jx)=xy_Tx(ix,1)-xy_Rx(jx,1);
-    end
-end
-   
-%calculate y distances
-d_y=zeros(length(xy_Tx(:,2)),length(xy_Rx(:,2)));
-for iy=1:length(xy_Tx(:,2))
-    for jy=1:length(xy_Rx(:,2))
-        d_y(iy,jy)=xy_Tx(iy,2)-xy_Rx(jy,2);
-    end
-end
-
-%calculate actual distance (pythagoras), dims rows V trials, cols > distance
-d_xy=sqrt(d_x.^2+d_y.^2);
-
-
-P_tx=27;
-d_0=1;
-
 %experiment data
-exp7=[50	53	500	500	61	500	500	53
+
+exp7=nan(61,8);%instantiate NaN matrices of max size (61x8)
+%fill in first blocks, experimental size with relevant data
+exp7(1:31,1:8)=[50	53	500	500	61	500	500	53
 50	71	500	500	63	500	500	52
 50	71	500	500	63	500	500	52
 50	58	500	500	63	500	500	53
@@ -84,7 +65,8 @@ exp7=[50	53	500	500	61	500	500	53
 48	48	500	500	63	500	500	53
 48	52	52	500	63	500	500	50];
 
-exp8=[57	36	56	66	54	500	500	500
+exp8=nan(61,8);
+exp8(1:34,1:8)=[57	36	56	66	54	500	500	500
 57	34	56	59	59	67	500	66
 57	34	56	59	59	67	500	66
 54	38	57	64	59	67	500	66
@@ -119,7 +101,8 @@ exp8=[57	36	56	66	54	500	500	500
 54	80	56	61	60	500	500	62
 53	78	59	59	60	500	500	66];
 
-exp9=[58	53	44	500	42	68	500	500
+exp9=nan(61,8);
+exp9(1:34,1:8)=[58	53	44	500	42	68	500	500
 61	52	43	59	48	72	500	500
 61	47	40	59	49	67	500	500
 61	50	44	59	49	67	500	500
@@ -154,7 +137,8 @@ exp9=[58	53	44	500	42	68	500	500
 58	50	79	57	46	64	76	500
 59	50	43	57	44	64	76	500];
 
-exp10=[59	500	28	60	62	65	74	500
+exp10=nan(61,8);
+exp10(1:37,1:8)=[59	500	28	60	62	65	74	500
 59	500	32	58	63	62	77	500
 59	500	32	58	63	62	77	500
 59	67	29	63	58	61	77	500
@@ -192,7 +176,8 @@ exp10=[59	500	28	60	62	65	74	500
 54	51	31	58	61	65	500	500
 54	51	84	59	62	65	79	80];
 
-exp11=[75	86	44	49	73	55	74	500
+exp11=nan(61,8);
+exp11(1:41,1:8)=[75	86	44	49	73	55	74	500
 75	60	38	52	73	55	74	500
 75	60	38	52	73	55	74	500
 75	60	38	52	73	55	74	500
@@ -234,7 +219,8 @@ exp11=[75	86	44	49	73	55	74	500
 55	78	40	51	61	500	500	500
 55	78	40	51	61	500	500	500];
 
-exp12=[62	68	57	31	500	62	64	500
+exp12=nan(61,8);
+exp12(1:34,1:8)=[62	68	57	31	500	62	64	500
 62	68	57	31	500	62	64	500
 62	65	51	67	81	62	64	500
 62	65	51	67	81	62	64	500
@@ -269,7 +255,8 @@ exp12=[62	68	57	31	500	62	64	500
 84	66	53	35	80	72	62	86
 62	71	50	29	80	58	68	500];
 
-exp13=[71	57	60	500	34	76	76	68
+exp13=nan(61,8);
+exp13(1:37,1:8)=[71	57	60	500	34	76	76	68
 71	57	65	74	34	69	77	68
 71	57	65	74	34	69	77	68
 71	55	65	74	31	69	77	66
@@ -307,7 +294,8 @@ exp13=[71	57	60	500	34	76	76	68
 69	51	54	79	26	66	73	64
 500	51	55	78	74	62	82	66];
 
-exp14=[500	66	63	76	54	49	61	75
+exp14=nan(61,8);
+exp14(1:61,1:8)=[500	66	63	76	54	49	61	75
 500	71	63	76	54	87	61	76
 500	71	63	76	54	87	61	76
 500	68	64	76	54	87	65	76
@@ -369,7 +357,8 @@ exp14=[500	66	63	76	54	49	61	75
 500	86	64	500	46	48	57	68
 500	86	64	500	46	48	57	68];
 
-exp15=[86	75	69	500	63	42	52	500
+exp15=nan(61,8);
+exp15(1:37,1:8)=[86	75	69	500	63	42	52	500
 86	75	69	75	84	39	60	500
 86	75	69	75	84	39	60	500
 86	75	69	75	65	43	59	500
@@ -407,7 +396,8 @@ exp15=[86	75	69	500	63	42	52	500
 500	76	81	72	61	43	57	500
 500	75	500	66	62	36	59	500];
 
-exp16=[87	78	73	64	69	39	42	500
+exp16=nan(61,8);
+exp16(1:48,1:8)=[87	78	73	64	69	39	42	500
 87	78	70	64	63	45	49	500
 87	78	70	64	63	45	49	500
 87	75	68	64	64	50	49	76
@@ -456,7 +446,8 @@ exp16=[87	78	73	64	69	39	42	500
 85	76	89	64	500	45	46	500
 93	79	500	70	500	48	50	500];
 
-exp17=[54	58	78	90	69	500	93	44
+exp17=nan(61,8);
+exp17(1:34,1:8)=[54	58	78	90	69	500	93	44
 55	62	76	90	67	500	93	44
 55	61	76	81	67	500	97	57
 55	59	80	86	67	500	97	44
@@ -491,7 +482,8 @@ exp17=[54	58	78	90	69	500	93	44
 49	58	82	500	67	500	500	42
 51	58	82	84	67	500	94	79];
 
-exp18=[59	65	500	500	69	500	500	39
+exp18=nan(61,8);
+exp18(1:39,1:8)=[59	65	500	500	69	500	500	39
 60	68	500	84	64	500	500	36
 60	68	500	84	64	500	500	36
 61	64	500	89	63	500	500	38
@@ -531,16 +523,147 @@ exp18=[59	65	500	500	69	500	500	39
 60	60	76	82	61	500	500	34
 60	59	77	82	60	500	500	33];
 
-%plotting Rx Power vs log(distance)
+%combine all exps, big matrix
+edata=[exp7'
+    exp8'
+    exp9'
+    exp10'
+    exp11'
+    exp12'
+    exp13'
+    exp14'
+    exp15'
+    exp16'
+    exp17'
+    exp18'];
+
+%remove erroneous measures
+edata(edata==500)=NaN;
+
+%CALCULATING DISTANCES
+%calculate x distance
+d_x=zeros(length(xy_Tx(:,1)),length(xy_Rx(:,1)));
+for ix=1:length(xy_Tx(:,1))
+    for jx=1:length(xy_Rx(:,1))
+        %ix
+        %jx
+        d_x(ix,jx)=xy_Tx(ix,1)-xy_Rx(jx,1);
+    end
+end
+   
+%calculate y distances
+d_y=zeros(length(xy_Tx(:,2)),length(xy_Rx(:,2)));
+for iy=1:length(xy_Tx(:,2))
+    for jy=1:length(xy_Rx(:,2))
+        d_y(iy,jy)=xy_Tx(iy,2)-xy_Rx(jy,2);
+    end
+end
+
+%calculate actual distance (pythagoras), dims rows V trials, cols > distance
+d_xy=sqrt(d_x.^2+d_y.^2);
+dxy=reshape(d_xy',[],1);
+
+%big matrix
+bfg=[dxy edata];
+
 figure(1);
-hold on;
-grid on;
-semilogx();
+for i96=1:size(bfg,1)
+    for j61=2:size(bfg,2)
+        semilogx(bfg(i96,1),bfg(i96,j61),'*');
+        hold on;
+        grid on;
+    end
+end
+xlabel('Log Distance from Transmitter');
+ylabel('Received Power');
+title('Scatter Plot of Received Power vs Distance');
+hold off
 
-%for trial 1-12 distance 1-8, plot distance 1-8 on x, received powers in
-%cols of exp trial# d(:,1-8)
+%take avg for linear regression
+avg=zeros(96,1);
 
-for it=1:12
-    for id=1:8
-        figure(1);
-        plot()
+for i96=1:size(bfg,1)
+    sumrow=0;
+        count=0;
+    for j61=2:size(bfg,2)
+        sumrow=nansum([sumrow bfg(i96,j61)]);
+        if  ~isnan(bfg(i96,j61))
+            count=count+1;
+        end
+    end
+    avg(i96,1)=sumrow/count;
+end
+
+%new figure for regression
+figure(2);
+for i96=1:size(bfg,1)
+    for j61=2:size(bfg,2)
+        semilogx(bfg(i96,1),bfg(i96,j61),'*');
+        hold on;
+        grid on;
+    end
+end
+xlabel('Log Distance from Transmitter');
+ylabel('Received Power');
+title('Plotted points and best fit linear regression');
+
+
+%linear regression (degree 1 polyfit)
+mdl=fitlm(bfg(:,1),avg);
+coeffs = polyfit(bfg([1:5,8:14,16:end],1),avg(~isnan(avg)), 1);
+%semilogx(coeffs(1)*);
+%plot best fit line
+x=linspace(0,100);
+y=coeffs(2)+coeffs(1)*x;
+semilogx(x,y);
+
+%calculate SD and var
+A=bfg(:,2:end);
+sd=nanstd(A');
+var=sqrt(sd); 
+ 
+
+%{
+Writeup:
+B) Parameters are in the 'coeffs' variable.  47.6988 for a y-intercept, and
+0.9264 for the slope.  Y-intercept corresponds to K value, whereas slope corresponds to Eta N.
+
+Keep in mind all experimentla values were negative, and so these
+are similarly negative in real life, in line with a decreasing Received
+Power with increasing distance.
+
+C) There are 96 values for standard deviation, in line with the 96
+different 12 experiments * 8 receivers.  Values can be found in the 'sd'
+variable.
+First few terms pulled with [bfg(:,1) sd']:
+    8.9200    4.5238
+    9.0504   10.6344
+   23.6733    4.4869
+   36.4862    9.8520
+   17.8566    3.0887
+   30.5840       NaN
+   41.7016       NaN
+   12.3894    2.9205
+   15.3300    3.7573
+    2.7483   18.6356
+   17.2697    8.4716
+
+.
+.
+.
+
+
+D) By leaving out samples corresponding to lost packets (-500 dBm in data),
+we are biasing out results.  Because packets received below a power
+threshold are a valid occurrence in the real world, yet we are tossing
+these as outliers in our experimental analysis, we are actually tightening
+the standard deviation and analyzing only the successful
+packets.  With as many outliers as we saw in the experimental data, our
+standard deviation would be much larger.  
+
+
+%}
+
+
+ 
+ 
