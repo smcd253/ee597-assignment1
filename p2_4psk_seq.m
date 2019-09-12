@@ -62,4 +62,4 @@ grid on
 legend('theoretical', 'simulation');
 xlabel('SNR "Eb/No" in dB');
 ylabel('Bit Error Rate');
-title('Bit Error Probability Curve for 4-PSK Modulation with Sequential Encoding');
+title('Bit Error Probability Curve for 4-PSK Modulation\newlinewith Sequential Encoding');
